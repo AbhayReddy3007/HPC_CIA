@@ -15,14 +15,18 @@ void matrix_multiplication(int **A, int **B, int **C, int n, int num_threads) {
 }
 
 int main() {
+
+    // for dyamically allocating 2d matrices of integer type
     int **A, **B, **C;
-    int n;
-    int m;
+
+    // m represents number of threads and n represents the length of the squuare matrix
+    int n, m;
     std::cout << "Enter the number of threads (m): ";
     std::cin >> m;
     std::cout << "Enter the size n (nxn): ";
     std::cin >> n;
-    
+
+    // for time calculatio
     const double BILLION = 1000000000.0;
     struct timespec start, end;
 
@@ -31,9 +35,18 @@ int main() {
 
     // Allocate memory for matrices A, B, and C
     A = new int*[n];
+    // A was initially a pointer to a int-pointer type.
+    // now it points to a array of int-pointer type of size n
+    // so A[i] is an array of int-pointers
+    
     B = new int*[n];
     C = new int*[n];
+    // similarly B, C
+    
     for(int i = 0; i < n; i++) {
+        // now for every elemet in A[i] which is a pointer of int type, 
+        // so A[i] will point to an integer array of size n
+        // now we get 2d array A[n][n] basically.
         A[i] = new int[n];
         B[i] = new int[n];
         C[i] = new int[n];
@@ -47,8 +60,12 @@ int main() {
         }
     }
 
+    // start timer
     clock_gettime(CLOCK_REALTIME, &start);
+    
     matrix_multiplication(A, B, C, n, m);
+
+    // end timer
     clock_gettime(CLOCK_REALTIME, &end);
 
     // Calculate elapsed time
